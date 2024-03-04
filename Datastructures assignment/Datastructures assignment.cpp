@@ -216,7 +216,6 @@ int main(int, char**) {
     endTime = chrono::high_resolution_clock::now();
     cout << "Binary search time took: " << chrono::duration_cast<chrono::nanoseconds>(endTime - startTime).count() << " nanoseconds" << endl;
 
-
     startTime = chrono::high_resolution_clock::now();
     p = bank.getAccount(sLast);
     endTime = chrono::high_resolution_clock::now();
@@ -227,4 +226,14 @@ int main(int, char**) {
     endTime = chrono::high_resolution_clock::now();
     cout << "NOT FOUND" << " took: " << chrono::duration_cast<chrono::milliseconds>(endTime - startTime).count() << " milliseconds" << endl;
     
+    random_device randomDevice;
+    mt19937 mersenneTwister(randomDevice());
+    shuffle(accountList.begin(), accountList.end(), mersenneTwister);
+
+    startTime = chrono::high_resolution_clock::now();
+    sort(accountList.begin(), accountList.end());
+    endTime = chrono::high_resolution_clock::now();
+    cout << "Sort algorithm took: " << chrono::duration_cast<chrono::nanoseconds>(endTime - startTime).count() << " nanoseconds" << endl;
+
+    string hej = "";
 }
