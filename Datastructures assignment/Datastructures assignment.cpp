@@ -142,7 +142,35 @@ public:
 
 };
 
+int binarySearch(vector<int> list, int targetValue) {    
+    int leftPointer = 0;
+    int rightPointer = list.size();
+
+    int midPoint = leftPointer + rightPointer / 2;
+    int currentPoint = list[midPoint];
+    bool targetFound = false;
+
+    while (!targetFound) {
+        currentPoint = list[midPoint];
+        if (currentPoint == targetValue) {
+            targetFound = true;
+            return currentPoint;
+        }
+        else {
+            if (currentPoint < targetValue) {
+                leftPointer = midPoint + 1;
+            }
+            if (currentPoint > targetValue) {
+                rightPointer = midPoint - 1;
+            }
+            midPoint = (leftPointer + rightPointer) / 2;
+        }
+
+    }
+}
+
 int main(int, char**) {
+    vector<int> accountList;
     //VectorAccountStorage storage;
     DistributedVectorAccountStorage storage;
     //MapAccountStorage storage;
@@ -164,6 +192,8 @@ int main(int, char**) {
         auto endAccountNumberString = accountNumber.end();
         accountNumber.replace(startAccountNumberString, endAccountNumberString, to_string(i));
 
+        accountList.push_back(i);
+
         if (i == 0) {
             sFirst = accountNumber;
         }
@@ -182,6 +212,12 @@ int main(int, char**) {
     cout << p->getAccountNumber() << " took: " << chrono::duration_cast<chrono::milliseconds>(endTime - startTime).count() << " milliseconds" << endl;
 
     startTime = chrono::high_resolution_clock::now();
+    int position = binarySearch(accountList, 455);
+    endTime = chrono::high_resolution_clock::now();
+    cout << "Binary search time took: " << chrono::duration_cast<chrono::nanoseconds>(endTime - startTime).count() << " nanoseconds" << endl;
+
+
+    startTime = chrono::high_resolution_clock::now();
     p = bank.getAccount(sLast);
     endTime = chrono::high_resolution_clock::now();
     cout << p->getAccountNumber() << " took: " << chrono::duration_cast<chrono::milliseconds>(endTime - startTime).count() << " milliseconds" << endl;
@@ -190,4 +226,5 @@ int main(int, char**) {
     p = bank.getAccount(sNotFound);
     endTime = chrono::high_resolution_clock::now();
     cout << "NOT FOUND" << " took: " << chrono::duration_cast<chrono::milliseconds>(endTime - startTime).count() << " milliseconds" << endl;
+    
 }
